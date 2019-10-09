@@ -17,8 +17,23 @@ gameDisplay.fill((255,255,255))
 pygame.display.update()
 pygame.display.set_caption("SESCOMP GAME")
 
-#delay
-time.sleep(2)
+#clock
+clock = pygame.time.Clock()
+
+####LOGICA PRINCIPAL
+fim = False
+#loop do jogo
+while not fim:
+	#lendo uma lista de eventos [eve1,eve2,even3...]
+	for evento in pygame.event.get():
+		if evento.type == pygame.QUIT:
+			fim = True
+		#imprimindo evento
+		print(evento)
+	pygame.display.update()
+	clock.tick(60)
+
+####FIM DA LOGICA PRINCIPAL
 
 #fecha a tela e o jogo
 pygame.quit()
