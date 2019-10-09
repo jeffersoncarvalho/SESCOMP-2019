@@ -11,6 +11,7 @@ display_height = 480
 
 #cores
 branca = (255,255,255)
+preto = (0,0,0)
 
 #setup
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -27,6 +28,8 @@ clock = pygame.time.Clock()
 heroi = pygame.image.load("emoji.png")
 hx = 50
 hy = 150
+hx_change = 0
+hy_change = 0
 
 #FUNCOES DO JOGO
 def apaga_tela():
@@ -34,6 +37,24 @@ def apaga_tela():
 
 def desenha_heroi(x,y):
 	gameDisplay.blit(heroi,(x,y))
+
+def desenha_limites():
+	pygame.draw.line(gameDisplay,preto,(20,20),(display_width-20,20),1)
+	pygame.draw.line(gameDisplay,preto,(20,20),(20,display_height-20),1)
+	pygame.draw.line(gameDisplay,preto,(20,display_height-20),
+		(display_width-20,display_height-20),1)
+	pygame.draw.line(gameDisplay,preto,(display_width-20,20),
+		(display_width-20,display_height-20),1)
+
+def ultrapassou_limiteX(meuX_futuro):
+	if meuX_futuro<20 or meuX_futuro>display_width-45:
+		return True
+	return False
+
+def ultrapassou_limiteY(meuY_futuro):
+	if meuY_futuro<20 or meuY_futuro>display_height-45:
+		return True
+	return False
 
 ####LOGICA PRINCIPAL
 fim = False
@@ -48,17 +69,29 @@ while not fim:
         #evento do teclado
         if evento.type == pygame.KEYDOWN:
 			if evento.key == pygame.K_LEFT:
-				hx = hx - 5
+				hx_change = - 5
 			elif evento.key == pygame.K_RIGHT:
-				hx = hx + 5
+				hx_change = + 5
 			elif evento.key == pygame.K_UP:
-				hy = hy - 5
+				hy_change = - 5
 			elif evento.key == pygame.K_DOWN:
-				hy = hy + 5
+				hy_change = + 5
+        if evento.type == pygame.KEYUP:
+			if evento.key == pygame.K_LEFT or evento.key == pygame.K_RIGHT:
+				hx_change = 0
+			if evento.key == pygame.K_UP or evento.key == pygame.K_DOWN:
+				hy_change = 0
+        
     #apaga a tela
 	apaga_tela()
     #desenha o heroi
+	if(not ultrapassou_limiteX(hx+hx_change)):
+		hx = hx + hx_change
+	if(not ultrapassou_limiteY(hy+hy_change)):
+		hy = hy + hy_change
 	desenha_heroi(hx,hy)
+    #desenha limites
+	desenha_limites()	
     #atualiza tela
 	pygame.display.update()
 	clock.tick(60)
