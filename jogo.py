@@ -14,7 +14,7 @@ branca = (255,255,255)
 
 #setup
 gameDisplay = pygame.display.set_mode((display_width,display_height))
-gameDisplay.fill((255,255,255))
+gameDisplay.fill(branca)
 
 #atualiza tela
 pygame.display.update()
@@ -28,6 +28,13 @@ heroi = pygame.image.load("emoji.png")
 hx = 50
 hy = 150
 
+#FUNCOES DO JOGO
+def apaga_tela():
+	gameDisplay.fill(branca)
+
+def desenha_heroi(x,y):
+	gameDisplay.blit(heroi,(x,y))
+
 ####LOGICA PRINCIPAL
 fim = False
 #loop do jogo
@@ -38,14 +45,23 @@ while not fim:
 			fim = True
 		#imprimindo evento
 		print(evento)
+        #evento do teclado
+        if evento.type == pygame.KEYDOWN:
+			if evento.key == pygame.K_LEFT:
+				hx = hx - 5
+			elif evento.key == pygame.K_RIGHT:
+				hx = hx + 5
+			elif evento.key == pygame.K_UP:
+				hy = hy - 5
+			elif evento.key == pygame.K_DOWN:
+				hy = hy + 5
     #apaga a tela
-	gameDisplay.fill(branca)
+	apaga_tela()
     #desenha o heroi
-	gameDisplay.blit(heroi,(hx,hy))
+	desenha_heroi(hx,hy)
     #atualiza tela
 	pygame.display.update()
 	clock.tick(60)
-
 ####FIM DA LOGICA PRINCIPAL
 
 #fecha a tela e o jogo
