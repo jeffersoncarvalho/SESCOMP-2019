@@ -1,6 +1,7 @@
 #sudo apt-get install python-pygame
 import pygame
 import time
+import random
 
 #iniciar o pygame
 pygame.init()
@@ -12,6 +13,7 @@ display_height = 480
 #cores
 branca = (255,255,255)
 preto = (0,0,0)
+amarelo = (255,255,0)
 
 #setup
 gameDisplay = pygame.display.set_mode((display_width,display_height))
@@ -46,6 +48,12 @@ def desenha_limites():
 	pygame.draw.line(gameDisplay,preto,(display_width-20,20),
 		(display_width-20,display_height-20),1)
 
+def desenha_ouros(ouros):
+	for ouro in ouros:
+		ouroX = ouro[0]
+		ouroY = ouro[1]
+		pygame.draw.circle(gameDisplay,amarelo,(ouroX,ouroY),13,0)
+
 def ultrapassou_limiteX(meuX_futuro):
 	if meuX_futuro<20 or meuX_futuro>display_width-45:
 		return True
@@ -56,8 +64,17 @@ def ultrapassou_limiteY(meuY_futuro):
 		return True
 	return False
 
+def criar_ouros():
+	ouros = []
+	for i in range(10):
+		x = random.randint(50,display_width-40)
+		y = random.randint(50,display_height-40)
+		ouros.append([x,y])
+	return ouros
+
 ####LOGICA PRINCIPAL
 fim = False
+ouros = criar_ouros()
 #loop do jogo
 while not fim:
 	#lendo uma lista de eventos [eve1,eve2,even3...]
@@ -84,6 +101,8 @@ while not fim:
         
     #apaga a tela
 	apaga_tela()
+    #desenha ouro
+	desenha_ouros(ouros)
     #desenha o heroi
 	if(not ultrapassou_limiteX(hx+hx_change)):
 		hx = hx + hx_change
